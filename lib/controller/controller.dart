@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import '../model/todo_model.dart';
 
 class SQLController extends GetxController {
   @override
@@ -35,7 +36,7 @@ class SQLController extends GetxController {
       onCreate: (Database db, int version) async {
         // When creating the db, create the table
         await db.execute(
-            'CREATE TABLE todo (id INTEGER PRIMARY KEY, title TEXT,description TEXT,time Text,favorite INTEGER, completed INTEGER)');
+            'CREATE TABLE todo (id INTEGER PRIMARY KEY, title TEXT,description TEXT,time INTEGER,favorite INTEGER, completed INTEGER)');
         debugPrint('database is Created');
       },
       onOpen: (Database db) {
@@ -46,9 +47,19 @@ class SQLController extends GetxController {
     );
   }
 
+  List<TodoModel> list = [];
+
   void getAllData() async {
     var allData = await database.query('todo');
-    print(allData);
+
+    for (var i in allData) {
+      debugPrint(i.toString());
+      list.add(TodoModel.fromJson(i));
+    }
+    // debugPrint('list.length.toString');
+    debugPrint(list.length.toString());
+    // debugPrint(list.toString());
+    debugPrint(allData.toString());
     update();
   }
 
