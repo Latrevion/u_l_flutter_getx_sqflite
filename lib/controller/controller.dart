@@ -25,7 +25,6 @@ class SQLController extends GetxController {
     var databasePath = await getDatabasesPath();
     String path = join(databasePath, 'todo.db');
     await deleteDatabase(path);
-    print('delete deleteTheDatabase');
   }
 
   void openAppDatabase({required String path}) async {
@@ -53,12 +52,8 @@ class SQLController extends GetxController {
     var allData = await database.query('todo');
 
     for (var i in allData) {
-      debugPrint(i.toString());
       list.add(TodoModel.fromJson(i));
     }
-    // debugPrint('list.length.toString');
-    debugPrint(list.length.toString());
-    // debugPrint(list.toString());
     debugPrint(allData.toString());
     update();
   }
@@ -75,7 +70,23 @@ class SQLController extends GetxController {
     getAllData();
   }
 
-  void updateData() {}
+  void updateData() async{
+    var updateData = await database.update('todo',{
+      'title': 'play',
+      'description': 'go football',
+      'time': '12',
+      "favorite": 1,
+      "completed": 1
+    },
+    where: 'id=${1}',
+    );
+    debugPrint('update item $updateData');
+    getAllData();
+  }
 
-  void deleteData() {}
+  void deleteData() async{
+    var deletedItem = await database.delete('todo',where: 'id=${1}');
+    debugPrint('deleted item $deletedItem');
+    getAllData();
+  }
 }
