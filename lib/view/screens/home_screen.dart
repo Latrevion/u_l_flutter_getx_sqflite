@@ -5,41 +5,45 @@ import 'package:get/get.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
-  final controller = Get.put(SQLController());
+  final control  = Get.put(SQLController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('todo app'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () {
-                controller.deleteTheDatabase();
-              },
-              icon: const Icon(Icons.remove)),
-          IconButton(
-              onPressed: () {
-                controller.insertData();
-              },
-              icon: const Icon(Icons.add))
-        ],
-      ),
-      body: Column(
-        children: [
-          IconButton(
-              onPressed: () {
-                controller.updateData();
-              },
-              icon: const Icon(Icons.share)),
-          IconButton(
-              onPressed: () {
-                controller.deleteData();
-              },
-              icon: const Icon(Icons.delete)),
-        ],
-      ),
-    );
+        appBar: AppBar(
+          title: const Text('todo app'),
+          centerTitle: true,
+          actions: [
+            IconButton(onPressed: (){
+              control.insertData();
+            }, icon:Icon(Icons.add))
+          ],
+        ),
+        body: GetBuilder<SQLController>(
+          builder: (controller)=>ListView.builder(
+              itemCount: controller.list.length,
+              itemBuilder: (context, index) => Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: SizedBox(
+                  height: 100,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(child: Text(controller.list[index].title)),
+                            Expanded(child: Text(controller.list[index].description)),
+                            Expanded(child: Text(controller.list[index].time.toString())),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )),
+        ));
   }
 }
