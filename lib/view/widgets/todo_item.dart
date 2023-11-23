@@ -5,11 +5,13 @@ import '../screens/edit_screen.dart';
 
 class TodoItem extends StatelessWidget {
   const TodoItem({super.key, required this.controller, required this.index});
+
   final SQLController controller;
   final int index;
+
   @override
   Widget build(BuildContext context) {
-    return  Card(
+    return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
@@ -22,12 +24,12 @@ class TodoItem extends StatelessWidget {
               children: [
                 const Spacer(),
                 Expanded(child: Text(controller.list[index].title)),
-                Expanded(
-                    child: Text(
-                        controller.list[index].time.toString())),
+                Expanded(child: Text(controller.list[index].time.toString())),
               ],
             ),
-            const SizedBox(height: 20.0,),
+            const SizedBox(
+              height: 20.0,
+            ),
             // Text(controller.list[index].description),
             Text(controller.list[index].description),
             Row(
@@ -35,7 +37,7 @@ class TodoItem extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    controller.deleteData(id:controller.list[index].id);
+                    controller.deleteData(id: controller.list[index].id);
                     // controller.deleteData(id: controller.list[index].id);
                   },
                   icon: const Icon(
@@ -45,10 +47,28 @@ class TodoItem extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    controller.updateTaskData =true;
-
-                    // controller.updateTaskData = true;
-                    Get.to(()=> EditScreen(id: controller.list[index].id,));
+                    controller.updateItemIntoFav(
+                        taskId: controller.list[index].id,
+                        favorite: controller.list[index].favorite);
+                  },
+                  icon: Icon(
+                    Icons.favorite,
+                    color: controller.list[index].favorite == 0
+                        ? Colors.black
+                        : Colors.red,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    controller.updateTaskData = true;
+                    Get.to(
+                      () => EditScreen(
+                        id: controller.list[index].id,
+                        title: controller.list[index].title,
+                        desc: controller.list[index].description,
+                        time: controller.list[index].time,
+                      ),
+                    );
                   },
                   icon: const Icon(
                     Icons.edit,

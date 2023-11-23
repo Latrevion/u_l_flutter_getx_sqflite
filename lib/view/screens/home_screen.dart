@@ -7,7 +7,9 @@ import 'package:u_l_flutter_getx_sqflite/view/widgets/todo_item.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
-  final control = Get.put(SQLController());
+  // final control = Get.put(SQLController());
+  final SQLController control =Get.find();
+
 
   @override
   Widget build(BuildContext context) {
