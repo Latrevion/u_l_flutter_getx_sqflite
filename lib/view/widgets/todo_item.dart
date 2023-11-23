@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:u_l_flutter_getx_sqflite/controller/controller.dart';
+import '../screens/edit_screen.dart';
 
 class TodoItem extends StatelessWidget {
   const TodoItem({super.key, required this.controller, required this.index});
@@ -12,31 +14,28 @@ class TodoItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: SizedBox(
-        height: 100,
+        height: 150,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(children: [
-          
-            Expanded(
-              child: Row(
-                children: [
-                  const Spacer(),
-                  Expanded(child: Text(controller.list[index].title)),
-                  Expanded(
-                      child: Text(
-                          controller.list[index].time.toString())),
-                ],
-              ),
+            Row(
+              children: [
+                const Spacer(),
+                Expanded(child: Text(controller.list[index].title)),
+                Expanded(
+                    child: Text(
+                        controller.list[index].time.toString())),
+              ],
             ),
-            // const SizedBox(height: 20.0,),
+            const SizedBox(height: 20.0,),
             // Text(controller.list[index].description),
-            Expanded(child:  Text(controller.list[index].description),),
+            Text(controller.list[index].description),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
                   onPressed: () {
-                    controller.deleteData();
+                    controller.deleteData(id:controller.list[index].id);
                     // controller.deleteData(id: controller.list[index].id);
                   },
                   icon: const Icon(
@@ -46,9 +45,10 @@ class TodoItem extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    controller.updateData();
+                    controller.updateTaskData =true;
+
                     // controller.updateTaskData = true;
-                    // Get.to(()=> EditScreen(id: controller.list[index].id,));
+                    Get.to(()=> EditScreen(id: controller.list[index].id,));
                   },
                   icon: const Icon(
                     Icons.edit,
